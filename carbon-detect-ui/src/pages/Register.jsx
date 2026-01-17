@@ -20,15 +20,19 @@ const Register = ({ switchToLogin, onSuccess }) => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault(); // prevent reload
+
     if (!form.name || !form.email || !form.password || !form.role) {
-      alert("Please fill all required fields");
+      setError("Please fill all required fields");
       return;
     }
 
     try {
       setLoading(true);
+      setError("");
 
       const res = await registerUser({
         name: form.name,
@@ -42,10 +46,10 @@ const Register = ({ switchToLogin, onSuccess }) => {
         localStorage.setItem("token", res.token);
         onSuccess("Registration successful 🎉");
       } else {
-        alert(res.message || "Registration failed");
+        setError(res.message || "Registration failed");
       }
-    } catch (err) {
-      alert("Something went wrong");
+    } catch {
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -57,75 +61,120 @@ const Register = ({ switchToLogin, onSuccess }) => {
         <h2>Create Account</h2>
         <p>Start your sustainability journey</p>
 
-        <input
-          placeholder="Full Name"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-
-        <input
-          placeholder="Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
-
-        <CustomSelect
-          options={roles}
-          placeholder="Select Role"
-          value={form.role}
-          onChange={(role) => setForm({ ...form, role })}
-        />
-
-        {form.role?.value === "student" && (
+        {/*  FORM */}
+        <form onSubmit={handleRegister}>
           <input
-            placeholder="College Name"
-            onChange={(e) =>
-              setForm({ ...form, organizationName: e.target.value })
-            }
+            placeholder="Full Name"
+            value={form.name}
+            disabled={loading}
+            onChange={(e) => {
+              setForm({ ...form, name: e.target.value });
+              setError("");
+            }}
           />
-        )}
 
-        {["organizer", "institution", "company"].includes(
-          form.role?.value
-        ) && (
           <input
-            placeholder="Organization / Institution Name"
-            onChange={(e) =>
-              setForm({ ...form, organizationName: e.target.value })
-            }
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            disabled={loading}
+            onChange={(e) => {
+              setForm({ ...form, email: e.target.value });
+              setError("");
+            }}
           />
-        )}
 
-        <button
-          className="auth-btn"
-          onClick={handleRegister}
-          disabled={loading}
-        >
-          {loading ? "Registering..." : "Register"}
-        </button>
+          <input
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            disabled={loading}
+            onChange={(e) => {
+              setForm({ ...form, password: e.target.value });
+              setError("");
+            }}
+          />
 
-        {/* 🔐 OAuth Buttons */}
-        <div style={{ marginTop: "14px" }}>
+          {/*  ROLE SELECT */}
+          <CustomSelect
+            options={roles}
+            placeholder="Select Role"
+            value={form.role}
+            onChange={(role) => {
+              setForm({ ...form, role });
+              setError("");
+            }}
+          />
+
+          {/* CONDITIONAL ORG INPUT */}
+          {form.role?.value === "student" && (
+            <input
+              placeholder="College Name"
+              value={form.organizationName}
+              disabled={loading}
+              onChange={(e) =>
+                setForm({ ...form, organizationName: e.target.value })
+              }
+            />
+          )}
+
+          {["organizer", "institution", "company"].includes(
+            form.role?.value
+          ) && (
+            <input
+              placeholder="Organization / Institution Name"
+              value={form.organizationName}
+              disabled={loading}
+              onChange={(e) =>
+                setForm({ ...form, organizationName: e.target.value })
+              }
+            />
+          )}
+
+          {/*  ERROR MESSAGE */}
+          {error && <div className="auth-error">{error}</div>}
+
+          {/* SUBMIT */}
+          <button type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
+        </form>
+
+        {/* OR */}
+        <div className="auth-divider">
+          <span>OR</span>
+        </div>
+
+        {/* OAUTH */}
+        <div className="oauth-container">
           <button
-            className="auth-btn"
+            type="button"
+            className="oauth-btn github"
             onClick={() =>
               (window.location.href = "http://localhost:5000/auth/github")
             }
           >
+            <svg viewBox="0 0 24 24" className="oauth-icon">
+              <path
+                fill="currentColor"
+                d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.11 3.29 9.44 7.86 10.97.58.11.79-.25.79-.56v-2.02c-3.2.7-3.88-1.54-3.88-1.54-.53-1.36-1.3-1.72-1.3-1.72-1.06-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.72 1.27 3.39.97.11-.76.41-1.27.74-1.56-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.3 1.19-3.11-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.19a11.1 11.1 0 0 1 5.8 0c2.2-1.5 3.18-1.19 3.18-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.85 1.19 3.11 0 4.43-2.69 5.41-5.25 5.69.42.36.8 1.08.8 2.18v3.23c0 .31.21.67.8.56 4.56-1.53 7.84-5.86 7.84-10.97C23.5 5.74 18.27.5 12 .5z"
+              />
+            </svg>
             Continue with GitHub
           </button>
 
           <button
-            className="auth-btn"
-            style={{ marginTop: "8px" }}
+            type="button"
+            className="oauth-btn google"
             onClick={() =>
               (window.location.href = "http://localhost:5000/auth/google")
             }
           >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+              className="oauth-icon-img"
+            />
             Continue with Google
           </button>
         </div>
