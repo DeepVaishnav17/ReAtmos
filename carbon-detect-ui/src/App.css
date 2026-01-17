@@ -418,6 +418,33 @@ html, body, #root {
   box-shadow: inset 0 0 0 2px rgba(45, 212, 191, 0.9);
 }
 
+/* ===== REMEMBER + FORGOT ROW ===== */
+.remember-forgot-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0 10px;
+}
+
+/* Forgot password link */
+.forgot-link {
+  font-size: 13px;
+  color: rgba(236, 253, 245, 0.85);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.forgot-link:hover {
+  color: #2dd4bf; /* 🌱 popti highlight */
+  text-decoration: underline;
+}
+
+/* Mobile tweak */
+@media (max-width: 480px) {
+  .forgot-link {
+    font-size: 12px;
+  }
+}
 
 /* ===== AUTH ERROR MESSAGE ===== */
 
@@ -443,4 +470,30 @@ html, body, #root {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+.form-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #fecaca;
+}
+
+.form-success {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #bbf7d0;
+}
+
+/* ===== AUTH MESSAGES ===== */
+.auth-error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #fecaca; /* soft red */
+}
+
+.auth-success {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #bbf7d0; /* soft green */
 }

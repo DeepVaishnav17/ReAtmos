@@ -16,14 +16,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
-    /* 🔐 AUTH PROVIDER */
     provider: {
       type: String,
       enum: ["local", "google", "github"],
       default: "local",
     },
 
-    /* 🔑 PASSWORD (LOCAL ONLY) */
     password: {
       type: String,
       minlength: 6,
@@ -32,22 +30,13 @@ const userSchema = new mongoose.Schema(
       },
     },
 
-    /* 🧩 OAUTH IDS */
-    googleId: {
-      type: String,
-      default: null,
-    },
+    googleId: { type: String, default: null },
+    githubId: { type: String, default: null },
 
-    githubId: {
-      type: String,
-      default: null,
-    },
-
-    /* 👤 PROFILE INFO */
     role: {
       type: String,
       enum: ["student", "organizer", "institution", "company"],
-      default: null, // 🔥 important for OAuth
+      default: null,
     },
 
     organizationName: {
@@ -55,16 +44,12 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
 
-    /* 🌱 CARBON DATA */
-    carbonCoins: {
-      type: Number,
-      default: 0,
-    },
+    carbonCoins: { type: Number, default: 0 },
+    totalEmissionsReduced: { type: Number, default: 0 },
 
-    totalEmissionsReduced: {
-      type: Number,
-      default: 0,
-    },
+    // 🔐 FORGOT PASSWORD
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
   { timestamps: true }
 );
