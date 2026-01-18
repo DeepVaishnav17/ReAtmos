@@ -35,10 +35,10 @@ const App = () => {
 
       <div className="foreground">
         <Routes>
-          {/* 🔐 RESET PASSWORD (URL BASED) */}
+          {/*  RESET PASSWORD (URL BASED) */}
           <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-          {/* 🔁 EXISTING FLOW */}
+          {/*  EXISTING FLOW */}
           <Route
             path="*"
             element={
@@ -79,7 +79,7 @@ const App = () => {
 
 
 
-                {page === "oauth-success" && (
+                {/* {page === "oauth-success" && (
                   <OAuthSuccess
                     onCompleteProfile={() => setPage("complete-profile")}
                     onSuccess={(msg) => {
@@ -87,16 +87,41 @@ const App = () => {
                       setPage("success");
                     }}
                   />
-                )}
+                )} */}
+                {page === "oauth-success" &&
+  (localStorage.getItem("token") ? (
+    <OAuthSuccess
+      onCompleteProfile={() => setPage("complete-profile")}
+      onSuccess={(msg) => {
+        setMessage(msg);
+        setPage("success");
+      }}
+    />
+  ) : (
+    setPage("login")
+  ))}
 
-                {page === "complete-profile" && (
+
+                {/* {page === "complete-profile" && (
                   <CompleteProfile
                     onDone={(msg) => {
                       setMessage(msg);
                       setPage("success");
                     }}
                   />
-                )}
+                )} */}
+                {page === "complete-profile" &&
+  (localStorage.getItem("token") ? (
+    <CompleteProfile
+      onDone={(msg) => {
+        setMessage(msg);
+        setPage("success");
+      }}
+    />
+  ) : (
+    setPage("login")
+  ))}
+
 
                 {page === "success" && <Success message={message} />}
               </>
