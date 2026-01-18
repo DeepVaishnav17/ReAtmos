@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CustomSelect from "../components/CustomSelect";
+import { completeProfile } from "../services/authService";
 
 const roles = [
   { label: "Student", value: "student" },
@@ -11,6 +12,7 @@ const roles = [
 const CompleteProfile = ({ onDone }) => {
   const [role, setRole] = useState(null);
   const [org, setOrg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const submit = async () => {
     if (!role || !org) {
@@ -18,27 +20,20 @@ const CompleteProfile = ({ onDone }) => {
       return;
     }
 
-    const res = await fetch(
-      "http://localhost:5000/api/profile/complete-profile",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          role: role.value,
-          organizationName: org,
-        }),
-      }
-    );
+    try {
+      setLoading(true);
 
-    const data = await res.json();
+      await completeProfile({
+        role: role.value,
+        organizationName: org,
+      });
 
-    if (res.ok) {
       onDone("Profile Completed 🎉");
-    } else {
-      alert(data.message);
+    } catch {
+      //  DO NOTHING
+      // auth errors are handled globally (silent logout)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,11 +51,12 @@ const CompleteProfile = ({ onDone }) => {
 
         <input
           placeholder="Organization / Institution"
+          value={org}
           onChange={(e) => setOrg(e.target.value)}
         />
 
-        <button className="auth-btn" onClick={submit}>
-          Continue
+        <button className="auth-btn" onClick={submit} disabled={loading}>
+          {loading ? "Saving..." : "Continue"}
         </button>
       </div>
     </div>
