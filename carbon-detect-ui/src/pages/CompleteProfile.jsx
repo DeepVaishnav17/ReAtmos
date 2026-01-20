@@ -1,6 +1,8 @@
 import { useState } from "react";
 import CustomSelect from "../components/CustomSelect";
 import { completeProfile } from "../services/authService";
+import LocationInput from "../components/LocationInput";
+
 
 const roles = [
   { label: "Student", value: "student" },
@@ -41,6 +43,11 @@ const CompleteProfile = ({ onDone }) => {
     <div className="auth-container">
       <div className="auth-card">
         <h2>Complete Profile</h2>
+             <LocationInput
+          value={location}
+          onChange={setLocation}
+          disabled={loading}
+        />
 
         <CustomSelect
           options={roles}

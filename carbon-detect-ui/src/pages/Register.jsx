@@ -2,6 +2,9 @@
 import { useState } from "react";
 import CustomSelect from "../components/CustomSelect";
 import { registerUser } from "../services/authService";
+import LocationInput from "../components/LocationInput";
+
+
 
 const roles = [
   { label: "Student", value: "student" },
@@ -17,6 +20,7 @@ const Register = ({ switchToLogin, onSuccess }) => {
     password: "",
     role: null,
     organizationName: "",
+    location: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -24,8 +28,8 @@ const Register = ({ switchToLogin, onSuccess }) => {
 
   const handleRegister = async (e) => {
     e.preventDefault(); // prevent reload
-
-    if (!form.name || !form.email || !form.password || !form.role) {
+    //console.log("FORM DATA 👉", form);
+    if (!form.name || !form.email || !form.password || !form.role || !form.location) {
       setError("Please fill all required fields");
       return;
     }
@@ -40,6 +44,7 @@ const Register = ({ switchToLogin, onSuccess }) => {
         password: form.password,
         role: form.role.value,
         organizationName: form.organizationName,
+        location: form.location,
       });
 
       if (res.token) {
@@ -94,6 +99,20 @@ const Register = ({ switchToLogin, onSuccess }) => {
               setError("");
             }}
           />
+          {/* LOCATION (CITY ONLY) */}
+          <LocationInput
+  value={form.location}
+  onSelect={(location) =>
+  setForm((prev) => ({ ...prev, location: location.trim() }))
+}
+  onInvalid={() =>
+    setError("Please select a city from the dropdown")
+  }
+  
+/>
+
+
+
 
           {/*  ROLE SELECT */}
           <CustomSelect
@@ -190,3 +209,5 @@ const Register = ({ switchToLogin, onSuccess }) => {
 };
 
 export default Register;
+
+

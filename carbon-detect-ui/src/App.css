@@ -497,3 +497,37 @@ html, body, #root {
   font-size: 13px;
   color: #bbf7d0; /* soft green */
 }
+
+/* ===== LOCATION AUTOCOMPLETE (MATCH CUSTOM SELECT) ===== */
+
+.autocomplete-box {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+
+  background: rgba(236, 253, 245, 0.95);
+  backdrop-filter: blur(10px);
+
+  border-radius: 14px;
+  border: 1px solid rgba(45, 212, 191, 0.45);
+
+  list-style: none;
+  padding: 6px 0;
+  z-index: 999;
+}
+
+.autocomplete-item {
+  padding: 12px 16px;
+  cursor: pointer;
+
+  color: #065f46;
+  font-weight: 600;
+  font-size: 14px;
+
+  transition: background 0.2s ease;
+}
+
+.autocomplete-item:hover {
+  background: rgba(45, 212, 191, 0.35);
+}

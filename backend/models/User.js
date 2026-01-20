@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    
 
     email: {
       type: String,
@@ -50,8 +51,23 @@ const userSchema = new mongoose.Schema(
     // 🔐 FORGOT PASSWORD
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+     location: {
+  type: String,
+  required: true,
+},
+apiCenter: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ApiCenter",
+    required: true,
   },
-  { timestamps: true }
+
+  distanceToCenterKm: {
+    type: Number,
+    required: true,
+  },
+  },
+  { timestamps: true },
+ 
 );
 
 module.exports = mongoose.model("User", userSchema);
