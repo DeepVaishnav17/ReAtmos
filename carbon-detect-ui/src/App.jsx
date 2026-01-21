@@ -8,6 +8,10 @@ import OAuthSuccess from "./pages/OAuthSuccess";
 import CompleteProfile from "./pages/CompleteProfile";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import DashboardLayout from "./pages/dashboard/DashboardLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+
 
 
 import ClickSpark from "./components/ClickSpark";
@@ -37,6 +41,14 @@ const App = () => {
         <Routes>
           {/*  RESET PASSWORD (URL BASED) */}
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <DashboardLayout />
+    </ProtectedRoute>
+  }
+/>
 
           {/*  EXISTING FLOW */}
           <Route
@@ -121,6 +133,7 @@ const App = () => {
   ) : (
     setPage("login")
   ))}
+
 
 
                 {page === "success" && <Success message={message} />}

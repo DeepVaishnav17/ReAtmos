@@ -1,0 +1,39 @@
+.prism-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #0b0f14;
+  overflow: hidden;
+}
+
+.prism-beam {
+  position: absolute;
+  width: 60vw;
+  height: 120vh;
+  filter: blur(120px);
+  opacity: 0.6;
+}
+
+.beam-left {
+  left: -20%;
+  top: -10%;
+  background: linear-gradient(180deg, #4facfe, #00f2fe);
+}
+
+.beam-right {
+  right: -20%;
+  top: -10%;
+  background: linear-gradient(180deg, #43e97b, #38f9d7);
+}
+
+.prism-fade {
+  position: absolute;
+  bottom: 0;
+  height: 35%;
+  width: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(11, 15, 20, 1),
+    rgba(11, 15, 20, 0)
+  );
+}

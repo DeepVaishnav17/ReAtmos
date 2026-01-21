@@ -54,3 +54,8 @@ export const forgotPassword = async (email) => {
   return json;
 };
 
+/* LOGOUT */
+export const logout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/";
+};

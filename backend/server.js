@@ -26,6 +26,11 @@ app.use("/auth", require("./routes/authOAuth"));
 app.use("/api/profile", require("./routes/profileRoutes"));
 
 
+
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/dashboard", require("./routes/dashboardRoutes"));
+
+
 // db
 mongoose
   .connect(process.env.MONGO_URI)

@@ -34,17 +34,6 @@ const userSchema = new mongoose.Schema(
     googleId: { type: String, default: null },
     githubId: { type: String, default: null },
 
-    role: {
-      type: String,
-      enum: ["student", "organizer", "institution", "company"],
-      default: null,
-    },
-
-    organizationName: {
-      type: String,
-      default: null,
-    },
-
     carbonCoins: { type: Number, default: 0 },
     totalEmissionsReduced: { type: Number, default: 0 },
 

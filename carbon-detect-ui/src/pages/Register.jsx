@@ -1,25 +1,13 @@
 
 import { useState } from "react";
-import CustomSelect from "../components/CustomSelect";
 import { registerUser } from "../services/authService";
 import LocationInput from "../components/LocationInput";
-
-
-
-const roles = [
-  { label: "Student", value: "student" },
-  { label: "Organizer", value: "organizer" },
-  { label: "Institution", value: "institution" },
-  { label: "Company", value: "company" },
-];
 
 const Register = ({ switchToLogin, onSuccess }) => {
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    role: null,
-    organizationName: "",
     location: "",
   });
 
@@ -29,7 +17,7 @@ const Register = ({ switchToLogin, onSuccess }) => {
   const handleRegister = async (e) => {
     e.preventDefault(); // prevent reload
     //console.log("FORM DATA 👉", form);
-    if (!form.name || !form.email || !form.password || !form.role || !form.location) {
+    if (!form.name || !form.email || !form.password || !form.location) {
       setError("Please fill all required fields");
       return;
     }
@@ -42,8 +30,6 @@ const Register = ({ switchToLogin, onSuccess }) => {
         name: form.name,
         email: form.email,
         password: form.password,
-        role: form.role.value,
-        organizationName: form.organizationName,
         location: form.location,
       });
 
@@ -114,41 +100,6 @@ const Register = ({ switchToLogin, onSuccess }) => {
 
 
 
-          {/*  ROLE SELECT */}
-          <CustomSelect
-            options={roles}
-            placeholder="Select Role"
-            value={form.role}
-            onChange={(role) => {
-              setForm({ ...form, role });
-              setError("");
-            }}
-          />
-
-          {/* CONDITIONAL ORG INPUT */}
-          {form.role?.value === "student" && (
-            <input
-              placeholder="College Name"
-              value={form.organizationName}
-              disabled={loading}
-              onChange={(e) =>
-                setForm({ ...form, organizationName: e.target.value })
-              }
-            />
-          )}
-
-          {["organizer", "institution", "company"].includes(
-            form.role?.value
-          ) && (
-            <input
-              placeholder="Organization / Institution Name"
-              value={form.organizationName}
-              disabled={loading}
-              onChange={(e) =>
-                setForm({ ...form, organizationName: e.target.value })
-              }
-            />
-          )}
 
           {/*  ERROR MESSAGE */}
           {error && <div className="auth-error">{error}</div>}

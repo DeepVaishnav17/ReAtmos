@@ -1,34 +1,14 @@
 import { useState } from "react";
-import CustomSelect from "../components/CustomSelect";
 import { completeProfile } from "../services/authService";
-import LocationInput from "../components/LocationInput";
-
-
-const roles = [
-  { label: "Student", value: "student" },
-  { label: "Organizer", value: "organizer" },
-  { label: "Institution", value: "institution" },
-  { label: "Company", value: "company" },
-];
 
 const CompleteProfile = ({ onDone }) => {
-  const [role, setRole] = useState(null);
-  const [org, setOrg] = useState("");
   const [loading, setLoading] = useState(false);
 
   const submit = async () => {
-    if (!role || !org) {
-      alert("All fields required");
-      return;
-    }
-
     try {
       setLoading(true);
 
-      await completeProfile({
-        role: role.value,
-        organizationName: org,
-      });
+      await completeProfile({});
 
       onDone("Profile Completed 🎉");
     } catch {
@@ -42,28 +22,11 @@ const CompleteProfile = ({ onDone }) => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Complete Profile</h2>
-             <LocationInput
-          value={location}
-          onChange={setLocation}
-          disabled={loading}
-        />
-
-        <CustomSelect
-          options={roles}
-          placeholder="Select Role"
-          value={role}
-          onChange={setRole}
-        />
-
-        <input
-          placeholder="Organization / Institution"
-          value={org}
-          onChange={(e) => setOrg(e.target.value)}
-        />
+        <h2>Profile Setup</h2>
+        <p>Your profile is almost ready!</p>
 
         <button className="auth-btn" onClick={submit} disabled={loading}>
-          {loading ? "Saving..." : "Continue"}
+          {loading ? "Setting up..." : "Continue"}
         </button>
       </div>
     </div>

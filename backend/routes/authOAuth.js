@@ -17,10 +17,8 @@ router.get(
   (req, res) => {
     const { user, token } = req.user;
 
-    const needsProfile = !user.role;
-
     res.redirect(
-      `${process.env.CLIENT_URL}/oauth-success?token=${token}&needsProfile=${needsProfile}`
+      `${process.env.CLIENT_URL}/oauth-success?token=${token}`
     );
   }
 );
@@ -37,10 +35,8 @@ router.get(
   (req, res) => {
     const { user, token } = req.user;
 
-    const needsProfile = !user.role;
-
     res.redirect(
-      `${process.env.CLIENT_URL}/oauth-success?token=${token}&needsProfile=${needsProfile}`
+      `${process.env.CLIENT_URL}/oauth-success?token=${token}`
     );
   }
 );
