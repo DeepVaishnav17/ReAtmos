@@ -46,9 +46,15 @@ const TopNav = () => {
           <Link to="/dashboard" className={`nav-item ${isActive("/dashboard") ? "active" : ""}`}>
             Dashboard
           </Link>
-          <a href="#features" className="nav-item">
-            Features
-          </a>
+         <Link
+  to="/maps"
+  className={`nav-item ${isActive("/maps") ? "active" : ""}`}
+>
+  Maps
+</Link>
+          <Link to="/events" className={`nav-item ${isActive("/events") ? "active" : ""}`}>
+            Events
+          </Link>
           <a href="#about" className="nav-item">
             Impact
           </a>

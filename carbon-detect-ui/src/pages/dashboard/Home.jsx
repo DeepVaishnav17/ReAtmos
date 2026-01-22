@@ -6,11 +6,14 @@ import "./Home.css";
 const Home = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  console.log("Home mounted")
 
   useEffect(() => {
+    console.log("Home useEffect running");
     const load = async () => {
       try {
         const res = await getDashboardHome();
+      
         setData(res);
       } catch (err) {
         console.error("Dashboard load failed", err);

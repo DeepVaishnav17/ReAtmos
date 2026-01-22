@@ -10,6 +10,11 @@ import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import FriendApp from "./pages/FriendPage";
+
+import EventsPage from "./pages/EventsPage";
+import ScanQR from "./pages/ScanQR";
+
 
 
 
@@ -42,13 +47,37 @@ const App = () => {
           {/*  RESET PASSWORD (URL BASED) */}
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route
-  path="/dashboard"
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+  path="/maps"
   element={
     <ProtectedRoute>
-      <DashboardLayout />
+      <FriendApp />
     </ProtectedRoute>
   }
 />
+<Route
+  path="/scan"
+  element={<ScanQR />}
+/>
+
+
+
+          <Route
+            path="/events"
+            element={
+              <ProtectedRoute>
+                <EventsPage />
+              </ProtectedRoute>
+            }
+          />
+
 
           {/*  EXISTING FLOW */}
           <Route
@@ -65,14 +94,14 @@ const App = () => {
                   />
                 )} */}
                 {page === "login" && (
-                <Login
-                  switchToRegister={() => setPage("register")}
-                  switchToForgotPassword={() => setPage("forgot-password")}
-                  onSuccess={(msg = "Login Successful ✅") => {
-                    setMessage(msg);
-                    setPage("success");
-                  }}
-                />
+                  <Login
+                    switchToRegister={() => setPage("register")}
+                    switchToForgotPassword={() => setPage("forgot-password")}
+                    onSuccess={(msg = "Login Successful ✅") => {
+                      setMessage(msg);
+                      setPage("success");
+                    }}
+                  />
                 )}
 
                 {page === "register" && (
@@ -101,17 +130,17 @@ const App = () => {
                   />
                 )} */}
                 {page === "oauth-success" &&
-  (localStorage.getItem("token") ? (
-    <OAuthSuccess
-      onCompleteProfile={() => setPage("complete-profile")}
-      onSuccess={(msg) => {
-        setMessage(msg);
-        setPage("success");
-      }}
-    />
-  ) : (
-    setPage("login")
-  ))}
+                  (localStorage.getItem("token") ? (
+                    <OAuthSuccess
+                      onCompleteProfile={() => setPage("complete-profile")}
+                      onSuccess={(msg) => {
+                        setMessage(msg);
+                        setPage("success");
+                      }}
+                    />
+                  ) : (
+                    setPage("login")
+                  ))}
 
 
                 {/* {page === "complete-profile" && (
@@ -123,16 +152,16 @@ const App = () => {
                   />
                 )} */}
                 {page === "complete-profile" &&
-  (localStorage.getItem("token") ? (
-    <CompleteProfile
-      onDone={(msg) => {
-        setMessage(msg);
-        setPage("success");
-      }}
-    />
-  ) : (
-    setPage("login")
-  ))}
+                  (localStorage.getItem("token") ? (
+                    <CompleteProfile
+                      onDone={(msg) => {
+                        setMessage(msg);
+                        setPage("success");
+                      }}
+                    />
+                  ) : (
+                    setPage("login")
+                  ))}
 
 
 

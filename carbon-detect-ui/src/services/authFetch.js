@@ -29,3 +29,5 @@ export const authFetch = async (endpoint, options = {}) => {
 
   return res;
 };
+
+export default authFetch;
