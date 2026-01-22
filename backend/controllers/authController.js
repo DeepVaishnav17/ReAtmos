@@ -113,11 +113,91 @@ const generateToken = (id, rememberMe = false) => {
 
 
 
+// exports.register = async (req, res) => {
+//   try {
+//     const { name, email, password, location } = req.body;
+
+//     if (!name || !email || !password || !location) {
+//       return res.status(400).json({ message: "All required fields missing" });
+//     }
+
+//     const userExists = await User.findOne({ email });
+//     if (userExists) {
+//       return res.status(400).json({ message: "User already exists" });
+//     }
+
+//     /* 🔹 1. Convert location → lat/lng */
+//     const geoRes = await fetch(
+//       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+//         location
+//       )}&limit=1`,
+//       {
+//         headers: {
+//           "User-Agent": "carbon-app/1.0 (contact@yourapp.com)",
+//         },
+//       }
+//     );
+
+//     const geoData = await geoRes.json();
+
+//     if (!geoData.length) {
+//       return res.status(400).json({ message: "Invalid location" });
+//     }
+
+//     const userLat = parseFloat(geoData[0].lat);
+//     const userLng = parseFloat(geoData[0].lon);
+
+//     /* 🔹 2. Find nearest API center */
+//     const centers = await ApiCenter.find();
+//     if (!centers.length) {
+//       return res.status(500).json({ message: "No API centers configured" });
+//     }
+
+//     let nearestCenter = null;
+//     let minDistance = Infinity;
+
+//     for (const center of centers) {
+//       const d = distanceKm(userLat, userLng, center.lat, center.lng);
+//       if (d < minDistance) {
+//         minDistance = d;
+//         nearestCenter = center;
+//       }
+//     }
+
+//     /* 🔹 3. Create user */
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     const user = await User.create({
+//       name,
+//       email,
+//       password: hashedPassword,
+//       location,
+//       apiCenter: nearestCenter._id,
+//       distanceToCenterKm: Math.round(minDistance),
+//     });
+
+//     res.status(201).json({
+//       message: "Registration successful",
+//       token: generateToken(user._id),
+//       user: {
+//         id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         location: user.location,
+//         apiCenter: nearestCenter.name,
+//         distanceKm: user.distanceToCenterKm,
+//       },
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, location } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!name || !email || !password || !location) {
+    if (!name || !email || !password) {
       return res.status(400).json({ message: "All required fields missing" });
     }
 
@@ -126,73 +206,27 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    /* 🔹 1. Convert location → lat/lng */
-    const geoRes = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        location
-      )}&limit=1`,
-      {
-        headers: {
-          "User-Agent": "carbon-app/1.0 (contact@yourapp.com)",
-        },
-      }
-    );
-
-    const geoData = await geoRes.json();
-
-    if (!geoData.length) {
-      return res.status(400).json({ message: "Invalid location" });
-    }
-
-    const userLat = parseFloat(geoData[0].lat);
-    const userLng = parseFloat(geoData[0].lon);
-
-    /* 🔹 2. Find nearest API center */
-    const centers = await ApiCenter.find();
-    if (!centers.length) {
-      return res.status(500).json({ message: "No API centers configured" });
-    }
-
-    let nearestCenter = null;
-    let minDistance = Infinity;
-
-    for (const center of centers) {
-      const d = distanceKm(userLat, userLng, center.lat, center.lng);
-      if (d < minDistance) {
-        minDistance = d;
-        nearestCenter = center;
-      }
-    }
-
-    /* 🔹 3. Create user */
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      location,
-      apiCenter: nearestCenter._id,
-      distanceToCenterKm: Math.round(minDistance),
+      provider: "local",
+      profileComplete: false,   // ⭐ important
     });
 
     res.status(201).json({
       message: "Registration successful",
       token: generateToken(user._id),
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        location: user.location,
-        apiCenter: nearestCenter.name,
-        distanceKm: user.distanceToCenterKm,
-      },
+      profileComplete: false,
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 /* ================= LOGIN ================= */
 exports.login = async (req, res) => {
   try {

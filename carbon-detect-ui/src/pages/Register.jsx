@@ -8,7 +8,7 @@ const Register = ({ switchToLogin, onSuccess }) => {
     name: "",
     email: "",
     password: "",
-    location: "",
+   // location: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ const Register = ({ switchToLogin, onSuccess }) => {
   const handleRegister = async (e) => {
     e.preventDefault(); // prevent reload
     //console.log("FORM DATA 👉", form);
-    if (!form.name || !form.email || !form.password || !form.location) {
+    if (!form.name || !form.email || !form.password ) {
       setError("Please fill all required fields");
       return;
     }
@@ -30,12 +30,13 @@ const Register = ({ switchToLogin, onSuccess }) => {
         name: form.name,
         email: form.email,
         password: form.password,
-        location: form.location,
+       // location: form.location,
       });
 
       if (res.token) {
         localStorage.setItem("token", res.token);
-        onSuccess("Registration successful 🎉");
+        onSuccess("/complete-profile");
+
       } else {
         setError(res.message || "Registration failed");
       }
@@ -86,7 +87,7 @@ const Register = ({ switchToLogin, onSuccess }) => {
             }}
           />
           {/* LOCATION (CITY ONLY) */}
-          <LocationInput
+           {/* <LocationInput
   value={form.location}
   onSelect={(location) =>
   setForm((prev) => ({ ...prev, location: location.trim() }))
@@ -95,7 +96,7 @@ const Register = ({ switchToLogin, onSuccess }) => {
     setError("Please select a city from the dropdown")
   }
   
-/>
+/>  */}
 
 
 

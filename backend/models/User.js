@@ -42,17 +42,20 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpires: Date,
      location: {
   type: String,
-  required: true,
+  //required: true,
+  default: null,
 },
 apiCenter: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "ApiCenter",
-    required: true,
+   // required: true,
+   default: null,
   },
 
   distanceToCenterKm: {
     type: Number,
-    required: true,
+  //  required: true,
+  default: null,
   },
   },
   { timestamps: true },

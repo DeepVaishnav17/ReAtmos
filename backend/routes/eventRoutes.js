@@ -41,8 +41,8 @@ const authMiddleware = require("../middleware/authMiddleware");
 const eventController = require("../controllers/eventController");
 
 // ================= QR VERIFY (MUST BE FIRST) =================
-//router.get("/verify/:token", authMiddleware, eventController.verifyAttendance);
-router.get("/verify/:token", eventController.verifyAttendance);
+router.get("/verify/:token", authMiddleware, eventController.verifyAttendance);
+// router.get("/verify/:token", eventController.verifyAttendance);
 // ================= PUBLIC =================
 router.get("/", eventController.getEvents);
 
